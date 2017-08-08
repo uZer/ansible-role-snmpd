@@ -1,0 +1,31 @@
+# {{ ansible_managed  }}
+agentAddress            udp:{{ ansible_default_ipv4.address }}:161
+view                    systemonly      included   .1.3.6.1.2.1.1
+view                    systemonly      included   .1.3.6.1.2.1.25.1
+
+## COMMUNITIES #################################################################
+{% for community in snmpd_communities %}
+{% for host in community.hosts | default(["default"]) %}
+{{ community.type + "community" | default("ro") }} community {{ community.name }} {{ host }}
+{% endfor %}
+{% endfor %}
+################################################################################
+
+rouser                  authOnlyUser
+sysname                 {{ ansible_hostname }}
+sysLocation             {{ snmpd_location }}
+sysContact              {{ snmpd_syscontact }}
+sysServices             72
+proc                    mountd
+proc                    ntalkd          4
+proc                    sendmail        10      1
+disk                    /               500000
+disk                    /var            5%
+includeAllDisks         10%
+load                    12              10      5
+trapsink                localhost       public
+iquerySecName           internalUser
+rouser                  internalUser
+defaultMonitors         yes
+linkUpDownNotifications yes
+master                  agentx

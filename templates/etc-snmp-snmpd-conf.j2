@@ -6,7 +6,7 @@ view                    systemonly      included   .1.3.6.1.2.1.25.1
 ## COMMUNITIES #################################################################
 {% for community in snmpd_communities %}
 {% for host in community.hosts | default(["default"]) %}
-{{ community.type + "community" | default("ro") }} community {{ community.name }} {{ host }}
+{{ community.type + "community" | default("ro") }} {{ community.name }} {{ host }}
 {% endfor %}
 {% endfor %}
 ################################################################################

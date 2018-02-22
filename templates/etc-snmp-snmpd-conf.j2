@@ -23,7 +23,9 @@ disk                    /               500000
 disk                    /var            5%
 includeAllDisks         10%
 load                    12              10      5
-trapsink                localhost       public
+{% for trapsink in snmpd_trapsinks %}
+trapsink                {{ trapsink.host | default("localhost") }}       {{ trapsink.name | default("public") }}
+{% endfor %}
 iquerySecName           internalUser
 rouser                  internalUser
 defaultMonitors         yes
